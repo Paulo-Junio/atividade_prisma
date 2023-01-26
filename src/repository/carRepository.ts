@@ -24,13 +24,24 @@ async function getCarWithLicensePlate(licensePlate: string) {
 }
 
 async function createOrUpdateCar(model: string, licensePlate: string, year: number, color: string) {
-  await client.cars.create({
-    data: {
+  await client.cars.upsert({
+    where: {
+      "licensePlate": licensePlate || "00000"
+    },
+    create: {
+      model: model,
+      "licensePlate": licensePlate,
+      year: year, 
+      color: color
+    },
+
+    update:{
       model: model,
       "licensePlate": licensePlate,
       year: year, 
       color: color
     }
+
   })
 }
 
